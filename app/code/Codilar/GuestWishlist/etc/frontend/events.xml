@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <!-- Also fired right after registration, so new accounts get their guest items too -->
+    <event name="customer_login">
+        <observer name="codilar_guest_wishlist_merge" instance="Codilar\GuestWishlist\Observer\MergeGuestWishlist"/>
+    </event>
+</config>

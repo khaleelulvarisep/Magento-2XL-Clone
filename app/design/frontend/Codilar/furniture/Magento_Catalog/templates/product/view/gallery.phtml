@@ -1,0 +1,36 @@
+<?php
+/**
+ * Product images as a grid: main image full width, the rest two per row.
+ * Replaces Luma's slider gallery.
+ *
+ * @var \Magento\Catalog\Block\Product\View\Gallery $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+$images = [];
+foreach ($block->getGalleryImages() as $image) {
+    if ($block->isMainImage($image)) {
+        array_unshift($images, $image);
+    } else {
+        $images[] = $image;
+    }
+}
+$productName = $block->getProduct()->getName();
+$mainImageUrl = $images ? $images[0]->getData('large_image_url') : $block->getViewModel()->getMainProductImage();
+?>
+<div class="pdp-gallery">
+    <?= $block->getChildHtml('badge') ?>
+    <link itemprop="image" href="<?= $escaper->escapeUrl($mainImageUrl) ?>">
+    <?php if (!$images): ?>
+        <div class="pdp-gallery__item pdp-gallery__item--main">
+            <img src="<?= $escaper->escapeUrl($mainImageUrl) ?>" alt="<?= $escaper->escapeHtmlAttr($productName) ?>">
+        </div>
+    <?php endif; ?>
+    <?php foreach ($images as $index => $image): ?>
+        <a class="pdp-gallery__item<?= $index === 0 ? ' pdp-gallery__item--main' : '' ?>"
+           href="<?= $escaper->escapeUrl($image->getData('large_image_url')) ?>" target="_blank" rel="noopener">
+            <img src="<?= $escaper->escapeUrl($image->getData('large_image_url')) ?>"
+                 alt="<?= $escaper->escapeHtmlAttr($image->getData('label') ?: $productName) ?>"
+                 <?= $index === 0 ? 'fetchpriority="high"' : 'loading="lazy"' ?>>
+        </a>
+    <?php endforeach; ?>
+</div>

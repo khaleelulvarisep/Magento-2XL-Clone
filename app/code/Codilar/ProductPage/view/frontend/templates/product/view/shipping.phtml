@@ -1,0 +1,19 @@
+<?php
+/**
+ * "Shipping and Returns" accordion item.
+ *
+ * @var \Magento\Framework\View\Element\Template $block
+ * @var \Magento\Framework\Escaper $escaper
+ * @var \Codilar\ProductPage\ViewModel\Shipping $viewModel
+ */
+$viewModel = $block->getData('shipping');
+$text = $viewModel->getText();
+?>
+<?php if ($text): ?>
+    <div class="pdp-shipping">
+        <p><?= /* @noEscape */ nl2br($escaper->escapeHtml($text)) ?></p>
+        <?php if ($url = $viewModel->getLearnMoreUrl()): ?>
+            <a href="<?= $escaper->escapeUrl($url) ?>"><?= $escaper->escapeHtml(__('Learn more')) ?></a>
+        <?php endif; ?>
+    </div>
+<?php endif; ?>

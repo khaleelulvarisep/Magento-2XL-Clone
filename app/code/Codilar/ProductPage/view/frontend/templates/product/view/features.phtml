@@ -1,0 +1,26 @@
+<?php
+/**
+ * Benefit circles at the bottom of the info column.
+ *
+ * @var \Magento\Framework\View\Element\Template $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+$features = [
+    ['icon' => 'free-shipping.jpg', 'title' => [__('Free'), __('Shipping')], 'text' => __('Eligible on selected orders')],
+    ['icon' => 'free-assembly.jpg', 'title' => [__('Free'), __('Assembly')], 'text' => __('Eligible on all furniture orders')],
+    ['icon' => 'warehouse-pickup.jpg', 'title' => [__('Warehouse'), __('Pickup')], 'text' => __('Next day pick up available')],
+    ['icon' => 'installments.jpg', 'title' => [__('Interest Free'), __('Installments')], 'text' => __('Hassle-free payments, buy now pay later')],
+];
+?>
+<div class="pdp-features">
+    <?php foreach ($features as $feature): ?>
+        <div class="pdp-feature">
+            <span class="pdp-feature__circle">
+                <img src="<?= $escaper->escapeUrl($block->getViewFileUrl('Codilar_ProductPage::images/pdp/' . $feature['icon'])) ?>"
+                     alt="" width="34" height="32" loading="lazy">
+            </span>
+            <p class="pdp-feature__title"><?= $escaper->escapeHtml($feature['title'][0]) ?><br><?= $escaper->escapeHtml($feature['title'][1]) ?></p>
+            <p class="pdp-feature__text"><?= $escaper->escapeHtml($feature['text']) ?></p>
+        </div>
+    <?php endforeach; ?>
+</div>

@@ -1,0 +1,30 @@
+// Codilar Furniture theme
+
+@import '_header.less';
+@import '_footer.less';
+@import '_bnpl-modal.less';
+@import '_product-page.less';
+
+// Jost: free alternative to Futura, hosted in the theme
+@font-family-name__base: 'Jost';
+
+& when (@media-common = true) {
+    .jost(@weight) {
+        @font-face {
+            font-family: 'Jost';
+            src: url('../fonts/jost/jost-@{weight}.woff2') format('woff2');
+            font-weight: @weight;
+            font-style: normal;
+            font-display: swap;
+        }
+    }
+    .jost(300);
+    .jost(400);
+    .jost(500);
+    .jost(600);
+
+    body {
+        color: #1d1f1c;
+    }
+}
+

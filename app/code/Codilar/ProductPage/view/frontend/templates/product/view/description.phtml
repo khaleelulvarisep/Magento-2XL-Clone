@@ -1,0 +1,39 @@
+<?php
+/**
+ * "Product Description" accordion item: description, then a two-column grid of the
+ * "Visible on Catalog Pages on Storefront" attributes plus care instructions.
+ *
+ * @var \Magento\Catalog\Block\Product\View\Attributes $block
+ * @var \Magento\Framework\Escaper $escaper
+ * @var \Codilar\ProductPage\ViewModel\ProductDetails $viewModel
+ */
+$viewModel = $block->getData('details');
+$product = $block->getProduct();
+$description = $viewModel->getDescriptionHtml($product);
+$specs = $block->getAdditionalData();
+$care = $viewModel->getCareHtml($product);
+if (!$description && !$specs && !$care) {
+    return;
+}
+?>
+<div class="pdp-description">
+    <?php if ($description): ?>
+        <div class="pdp-description__text"><?= /* @noEscape */ $description ?></div>
+    <?php endif; ?>
+    <?php if ($specs || $care): ?>
+        <div class="pdp-specs">
+            <?php foreach ($specs as $spec): ?>
+                <div class="pdp-specs__item">
+                    <strong><?= $escaper->escapeHtml($spec['label']) ?>:</strong>
+                    <?= /* @noEscape */ $viewModel->getSpecValueHtml($product, (string) $spec['value'], $spec['code']) ?>
+                </div>
+            <?php endforeach; ?>
+            <?php if ($care): ?>
+                <div class="pdp-specs__item">
+                    <strong><?= $escaper->escapeHtml(__('Care')) ?> :</strong>
+                    <?= /* @noEscape */ $care ?>
+                </div>
+            <?php endif; ?>
+        </div>
+    <?php endif; ?>
+</div>

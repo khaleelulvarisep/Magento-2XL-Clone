@@ -1,0 +1,107 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <!-- Full category trail even when the product is opened directly -->
+        <referenceBlock name="breadcrumbs" template="Codilar_ProductPage::breadcrumbs.phtml">
+            <arguments>
+                <argument name="category_path" xsi:type="object">Codilar\ProductPage\ViewModel\CategoryPath</argument>
+            </arguments>
+        </referenceBlock>
+
+        <referenceBlock name="product.info.media.image">
+            <block class="Magento\Catalog\Block\Product\View" name="codilar.pdp.badge" as="badge"
+                   template="Codilar_ProductPage::product/view/badge.phtml">
+                <arguments>
+                    <argument name="new_arrival" xsi:type="object">Codilar\ProductPage\ViewModel\NewArrival</argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+
+        <referenceContainer name="product.info.main">
+            <!-- Title / category / SKU on the left, wishlist + reviews on the right (filled by the theme) -->
+            <container name="codilar.pdp.header" htmlTag="div" htmlClass="pdp-header" before="-">
+                <container name="codilar.pdp.header.main" htmlTag="div" htmlClass="pdp-header__main">
+                    <block class="Magento\Catalog\Block\Product\View" name="codilar.pdp.category"
+                           template="Codilar_ProductPage::product/view/category.phtml">
+                        <arguments>
+                            <argument name="category_path" xsi:type="object">Codilar\ProductPage\ViewModel\CategoryPath</argument>
+                        </arguments>
+                    </block>
+                </container>
+                <container name="codilar.pdp.header.aside" htmlTag="div" htmlClass="pdp-header__aside"/>
+            </container>
+
+            <block class="Magento\Catalog\Block\Product\View" name="codilar.pdp.points" after="product.info"
+                   template="Codilar_ProductPage::product/view/points.phtml">
+                <arguments>
+                    <argument name="loyalty_points" xsi:type="object">Codilar\ProductPage\ViewModel\LoyaltyPoints</argument>
+                </arguments>
+            </block>
+            <block class="Magento\Catalog\Block\Product\View" name="codilar.pdp.installments" after="codilar.pdp.points"
+                   template="Codilar_ProductPage::product/view/installments.phtml">
+                <arguments>
+                    <argument name="installments" xsi:type="object">Codilar\ProductPage\ViewModel\Installments</argument>
+                </arguments>
+                <!-- Popups opened by "Learn more" (Tabby) and "More options" (Tamara) -->
+                <block class="Magento\Catalog\Block\Product\View" name="codilar.pdp.installments.tabby.modal" as="tabby_modal"
+                       template="Codilar_ProductPage::product/view/bnpl/tabby-modal.phtml">
+                    <arguments>
+                        <argument name="installments" xsi:type="object">Codilar\ProductPage\ViewModel\Installments</argument>
+                    </arguments>
+                </block>
+                <block class="Magento\Catalog\Block\Product\View" name="codilar.pdp.installments.tamara.modal" as="tamara_modal"
+                       template="Codilar_ProductPage::product/view/bnpl/tamara-modal.phtml">
+                    <arguments>
+                        <argument name="installments" xsi:type="object">Codilar\ProductPage\ViewModel\Installments</argument>
+                    </arguments>
+                </block>
+            </block>
+            <block class="Magento\Catalog\Block\Product\View" name="codilar.pdp.warehouse" after="codilar.pdp.installments"
+                   template="Codilar_ProductPage::product/view/warehouse.phtml">
+                <arguments>
+                    <argument name="warehouse" xsi:type="object">Codilar\ProductPage\ViewModel\Warehouse</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+
+        <referenceContainer name="product.info.price">
+            <block class="Magento\Catalog\Block\Product\View" name="codilar.pdp.discount" after="product.price.final"
+                   template="Codilar_ProductPage::product/view/discount.phtml">
+                <arguments>
+                    <argument name="discount" xsi:type="object">Codilar\ProductPage\ViewModel\Discount</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+
+        <!-- Details accordion: "Product Description" (text + specs grid + care) and "Shipping and Returns" -->
+        <referenceBlock name="product.info.description" remove="true"/>
+        <referenceBlock name="product.attributes" remove="true"/>
+        <referenceBlock name="product.info.details">
+            <block class="Magento\Catalog\Block\Product\View\Attributes" name="codilar.pdp.description" as="product_description" group="detailed_info"
+                   template="Codilar_ProductPage::product/view/description.phtml">
+                <arguments>
+                    <argument name="title" translate="true" xsi:type="string">Product Description</argument>
+                    <argument name="sort_order" xsi:type="string">10</argument>
+                    <argument name="details" xsi:type="object">Codilar\ProductPage\ViewModel\ProductDetails</argument>
+                </arguments>
+            </block>
+            <block class="Magento\Framework\View\Element\Template" name="codilar.pdp.shipping" as="shipping" group="detailed_info"
+                   template="Codilar_ProductPage::product/view/shipping.phtml">
+                <arguments>
+                    <argument name="title" translate="true" xsi:type="string">Shipping and Returns</argument>
+                    <argument name="sort_order" xsi:type="string">20</argument>
+                    <argument name="shipping" xsi:type="object">Codilar\ProductPage\ViewModel\Shipping</argument>
+                </arguments>
+            </block>
+        </referenceBlock>
+
+        <referenceContainer name="content">
+            <!-- Benefit circles; the theme moves them to the bottom of the info column -->
+            <block class="Magento\Framework\View\Element\Template" name="codilar.pdp.features"
+                   template="Codilar_ProductPage::product/view/features.phtml"/>
+        </referenceContainer>
+        <!-- No reviews list / form on the product page -->
+        <referenceBlock name="reviews.tab" remove="true"/>
+    </body>
+</page>

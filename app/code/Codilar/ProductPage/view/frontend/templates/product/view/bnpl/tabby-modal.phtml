@@ -1,0 +1,83 @@
+<?php
+/**
+ * Tabby "Learn more" popup (display only). Opened by [data-bnpl-open="tabby"].
+ *
+ * @var \Magento\Catalog\Block\Product\View $block
+ * @var \Magento\Framework\Escaper $escaper
+ * @var \Codilar\ProductPage\ViewModel\Installments $viewModel
+ */
+$viewModel = $block->getData('installments');
+$plans = $viewModel->getTabbyPlans($block->getProduct());
+// Returns an already-escaped URL of an image in this module
+$image = fn (string $file): string => $escaper->escapeUrl($block->getViewFileUrl('Codilar_ProductPage::images/bnpl/' . $file));
+$steps = [
+    __('Choose Tabby at checkout to select a payment plan'),
+    __('Enter your information and add your debit or credit card'),
+    __('Depending on your plan, you may or may not make a down payment'),
+    __("We'll send you a reminder when your next payment is due"),
+];
+?>
+<div class="bnpl-popup bnpl-popup--tabby" hidden
+     data-mage-init='{"Codilar_ProductPage/js/bnpl-modal": {"provider": "tabby"}}'>
+    <div class="bnpl-popup__head">
+        <img src="<?= /* @noEscape */ $image('tabby-logo-black.png') ?>" alt="tabby" width="99" height="32">
+        <button type="button" class="bnpl-popup__close" data-bnpl-close aria-label="<?= $escaper->escapeHtmlAttr(__('Close')) ?>">
+            <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 2l12 12M14 2L2 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+    </div>
+
+    <img class="tabby-popup__illustration" src="<?= /* @noEscape */ $image('tabby-illustration.png') ?>" alt="" width="408" height="233">
+
+    <h2 class="tabby-popup__title"><?= $escaper->escapeHtml(__('Get more time to pay')) ?></h2>
+    <p class="tabby-popup__subtitle">
+        <?= $escaper->escapeHtml(__('Split your purchase in up to %1 payments', end($plans)['count'])) ?>
+    </p>
+
+    <ul class="tabby-popup__plans">
+        <?php foreach ($plans as $plan): ?>
+            <li class="tabby-popup__card tabby-popup__plan">
+                <div>
+                    <p class="tabby-popup__plan-name"><?= $escaper->escapeHtml(__('%1 payments', $plan['count'])) ?></p>
+                    <?php if ($plan['fee']): ?>
+                        <p class="tabby-popup__plan-note"><?= $escaper->escapeHtml(__('Includes %1 monthly fee', $plan['fee'])) ?></p>
+                    <?php else: ?>
+                        <p class="tabby-popup__plan-note tabby-popup__plan-note--free"><?= $escaper->escapeHtml(__('No interest. No fees.')) ?></p>
+                    <?php endif; ?>
+                </div>
+                <p class="tabby-popup__plan-amount"><?= $escaper->escapeHtml(__('%1/mo', $plan['monthly'])) ?></p>
+            </li>
+        <?php endforeach; ?>
+    </ul>
+
+    <div class="tabby-popup__card">
+        <h3 class="tabby-popup__card-title"><?= $escaper->escapeHtml(__('How it works')) ?></h3>
+        <ol class="tabby-popup__steps">
+            <?php foreach ($steps as $number => $step): ?>
+                <li><span class="tabby-popup__step-number"><?= $number + 1 ?></span><?= $escaper->escapeHtml($step) ?></li>
+            <?php endforeach; ?>
+        </ol>
+    </div>
+
+    <div class="tabby-popup__card tabby-popup__feature">
+        <span class="tabby-popup__feature-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3e7ccb" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.5-3.6 3.2-6 6.5-6s6 2.4 6.5 6M16 4.8a3.5 3.5 0 010 6.4M18 14.4c2 .9 3.3 3 3.5 5.6"/></svg>
+        </span>
+        <div>
+            <p class="tabby-popup__feature-title"><?= $escaper->escapeHtml(__('Trusted by millions')) ?></p>
+            <p class="tabby-popup__feature-text"><?= $escaper->escapeHtml(__('Over 20 million shoppers discover products and pay their way with Tabby')) ?></p>
+        </div>
+    </div>
+
+    <div class="tabby-popup__card tabby-popup__feature">
+        <span class="tabby-popup__feature-icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="#3e7ccb"/><path d="M7.5 12.3l3 3 6-6.3" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        <div>
+            <p class="tabby-popup__feature-title"><?= $escaper->escapeHtml(__('Shop safely with Tabby')) ?></p>
+            <p class="tabby-popup__feature-text"><?= $escaper->escapeHtml(__('Buyer protection is included with every purchase')) ?></p>
+        </div>
+    </div>
+
+    <button type="button" class="tabby-popup__continue" data-bnpl-close><?= $escaper->escapeHtml(__('Continue shopping')) ?></button>
+    <img class="bnpl-popup__cards" src="<?= /* @noEscape */ $image('tabby-cards.png') ?>" alt="<?= $escaper->escapeHtmlAttr(__('Mastercard, Visa, Apple Pay, Google Pay')) ?>" width="174" height="29">
+</div>

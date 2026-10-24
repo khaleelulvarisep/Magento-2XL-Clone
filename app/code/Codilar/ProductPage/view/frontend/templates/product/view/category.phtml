@@ -1,0 +1,14 @@
+<?php
+/**
+ * Category link under the product title.
+ *
+ * @var \Magento\Catalog\Block\Product\View $block
+ * @var \Magento\Framework\Escaper $escaper
+ * @var \Codilar\ProductPage\ViewModel\CategoryPath $viewModel
+ */
+$viewModel = $block->getData('category_path');
+$category = $viewModel->getCategory($block->getProduct());
+?>
+<?php if ($category): ?>
+    <a class="pdp-category" href="<?= $escaper->escapeUrl($category->getUrl()) ?>"><?= $escaper->escapeHtml($category->getName()) ?></a>
+<?php endif; ?>

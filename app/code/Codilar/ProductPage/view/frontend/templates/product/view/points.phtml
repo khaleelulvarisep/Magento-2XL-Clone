@@ -1,0 +1,19 @@
+<?php
+/**
+ * "Earn X points" line.
+ *
+ * @var \Magento\Catalog\Block\Product\View $block
+ * @var \Magento\Framework\Escaper $escaper
+ * @var \Codilar\ProductPage\ViewModel\LoyaltyPoints $viewModel
+ */
+$viewModel = $block->getData('loyalty_points');
+$points = $viewModel->isEnabled() ? $viewModel->getPoints($block->getProduct()) : 0;
+?>
+<?php if ($points > 0): ?>
+    <div class="pdp-points">
+        <img class="pdp-points__logo" src="<?= $escaper->escapeUrl($block->getViewFileUrl('Codilar_ProductPage::images/pdp/rewards.png')) ?>"
+             alt="<?= $escaper->escapeHtmlAttr(__('Rewards')) ?>" width="35" height="38">
+        <span><?= $escaper->escapeHtml(__('Earn %1 points', $points)) ?></span>
+        <svg class="pdp-points__info" width="11" height="11" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="M6.2 6.2a1.9 1.9 0 113 1.5c-.8.5-1.2.9-1.2 1.6M8 11.6v.4" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+    </div>
+<?php endif; ?>

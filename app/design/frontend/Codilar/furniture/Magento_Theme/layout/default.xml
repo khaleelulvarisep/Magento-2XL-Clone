@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!--
+    Header and footer for every page:
+    black top bar, logo | wide search | icons row, centred menu, and a link-column footer.
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <!-- Header -->
+        <referenceBlock name="logo">
+            <arguments>
+                <argument name="logo_file" xsi:type="string">images/logo.svg</argument>
+                <argument name="logo_width" xsi:type="number">55</argument>
+                <argument name="logo_height" xsi:type="number">76</argument>
+                <argument name="logo_alt" xsi:type="string">2XL Home</argument>
+            </arguments>
+        </referenceBlock>
+
+        <referenceContainer name="header.panel">
+            <block class="Magento\Framework\View\Element\Template" name="codilar.top.bar"
+                   template="Magento_Theme::html/top-bar.phtml"/>
+        </referenceContainer>
+
+        <referenceContainer name="header-wrapper">
+            <block class="Magento\Framework\View\Element\Template" name="codilar.header.icons" after="-"
+                   template="Magento_Theme::html/header-icons.phtml"/>
+        </referenceContainer>
+        <move element="minicart" destination="codilar.header.icons" as="minicart"/>
+        <move element="store_language" destination="codilar.header.icons" as="store_language"/>
+        <move element="currency" destination="codilar.header.icons" as="currency"/>
+
+        <!-- Menu inside <header> so the whole header (top bar, logo row, menu) can stick as one block -->
+        <move element="navigation.sections" destination="header.container" after="header-wrapper"/>
+
+        <!-- Account, wishlist and sign-in links are replaced by the icons row -->
+        <referenceBlock name="header.links" remove="true"/>
+
+        <!-- Footer -->
+        <referenceContainer name="footer">
+            <block class="Magento\Framework\View\Element\Template" name="codilar.footer"
+                   template="Magento_Theme::html/footer.phtml"/>
+        </referenceContainer>
+        <move element="form.subscribe" destination="codilar.footer" as="subscribe"/>
+        <move element="copyright" destination="footer-container" after="-"/>
+        <referenceBlock name="footer_links" remove="true"/>
+        <referenceBlock name="store_switcher" remove="true"/>
+    </body>
+</page>

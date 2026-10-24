@@ -1,0 +1,51 @@
+<?php
+/**
+ * Tabby / Tamara style "pay later" boxes (display only). Clicking anywhere on a box opens
+ * the popup rendered by the child block tabby_modal / tamara_modal.
+ *
+ * @var \Magento\Catalog\Block\Product\View $block
+ * @var \Magento\Framework\Escaper $escaper
+ * @var \Codilar\ProductPage\ViewModel\Installments $viewModel
+ */
+$viewModel = $block->getData('installments');
+$product = $block->getProduct();
+$showTabby = $viewModel->isEnabled('tabby');
+$showTamara = $viewModel->isEnabled('tamara');
+if (!$showTabby && !$showTamara) {
+    return;
+}
+?>
+<div class="pdp-installments">
+    <?php if ($showTabby && $plans = $viewModel->getTabbyPlans($product)): ?>
+        <div class="pdp-installment pdp-installment--tabby" data-bnpl-open="tabby" role="button" tabindex="0"
+             aria-haspopup="dialog" aria-label="<?= $escaper->escapeHtmlAttr(__('Tabby payment plans')) ?>">
+            <p class="pdp-installment__text">
+                <?= $escaper->escapeHtml(__('As low as')) ?>
+                <strong><?= $escaper->escapeHtml(__('%1/month', $viewModel->getLowestMonthlyPlan($plans)['monthly'])) ?></strong>
+                <?= $escaper->escapeHtml(__('or %1 interest-free payments.', $viewModel->getTabbyInterestFreeCount())) ?>
+                <span class="pdp-installment__link">
+                    <?= $escaper->escapeHtml(__('Learn more')) ?>
+                </span>
+            </p>
+            <img class="pdp-installment__logo" src="<?= $escaper->escapeUrl($block->getViewFileUrl('Codilar_ProductPage::images/tabby.png')) ?>"
+                 alt="tabby" width="72" height="30">
+        </div>
+        <?= $block->getChildHtml('tabby_modal') ?>
+    <?php endif; ?>
+    <?php if ($showTamara && $plans = $viewModel->getTamaraPlans($product)): ?>
+        <div class="pdp-installment pdp-installment--tamara" data-bnpl-open="tamara" role="button" tabindex="0"
+             aria-haspopup="dialog" aria-label="<?= $escaper->escapeHtmlAttr(__('Tamara payment plans')) ?>">
+            <p class="pdp-installment__text">
+                <?= $escaper->escapeHtml(__('From')) ?>
+                <?php $plan = $viewModel->getLowestMonthlyPlan($plans) ?>
+                <strong><?= $escaper->escapeHtml($plan['monthly']) ?></strong><?= $escaper->escapeHtml(__('/Month for up to %1 months, no late fees!', $plan['count'])) ?>
+                <span class="pdp-installment__link">
+                    <?= $escaper->escapeHtml(__('More options')) ?>
+                </span>
+            </p>
+            <img class="pdp-installment__logo" src="<?= $escaper->escapeUrl($block->getViewFileUrl('Codilar_ProductPage::images/tamara.png')) ?>"
+                 alt="tamara" width="95" height="32">
+        </div>
+        <?= $block->getChildHtml('tamara_modal') ?>
+    <?php endif; ?>
+</div>

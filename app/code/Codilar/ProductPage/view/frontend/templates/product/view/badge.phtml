@@ -1,0 +1,13 @@
+<?php
+/**
+ * "New Arrival" badge on the gallery.
+ *
+ * @var \Magento\Catalog\Block\Product\View $block
+ * @var \Magento\Framework\Escaper $escaper
+ * @var \Codilar\ProductPage\ViewModel\NewArrival $viewModel
+ */
+$viewModel = $block->getData('new_arrival');
+?>
+<?php if ($viewModel->isNew($block->getProduct())): ?>
+    <span class="pdp-badge"><?= $escaper->escapeHtml(__('New Arrival')) ?></span>
+<?php endif; ?>

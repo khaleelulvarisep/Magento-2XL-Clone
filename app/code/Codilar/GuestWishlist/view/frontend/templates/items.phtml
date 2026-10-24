@@ -1,0 +1,58 @@
+<?php
+/**
+ * Guest wishlist page.
+ *
+ * @var \Magento\Framework\View\Element\Template $block
+ * @var \Magento\Framework\Escaper $escaper
+ * @var \Codilar\GuestWishlist\ViewModel\GuestWishlistItems $viewModel
+ */
+$viewModel = $block->getData('items');
+$products = $viewModel->getProducts();
+?>
+<div class="guest-wishlist">
+    <p class="guest-wishlist__notice">
+        <?= $escaper->escapeHtml(__('Your Wish List is saved on this device.')) ?>
+        <a href="<?= $escaper->escapeUrl($viewModel->getLoginUrl()) ?>"><?= $escaper->escapeHtml(__('Sign in')) ?></a>
+        <?= $escaper->escapeHtml(__('to keep it in your account.')) ?>
+    </p>
+
+    <?php if (!$products): ?>
+        <div class="message info empty"><span><?= $escaper->escapeHtml(__('You have no items in your wish list.')) ?></span></div>
+    <?php else: ?>
+        <ul class="guest-wishlist__items">
+            <?php foreach ($products as $product): ?>
+                <li class="guest-wishlist__item">
+                    <a class="guest-wishlist__image" href="<?= $escaper->escapeUrl($product->getProductUrl()) ?>">
+                        <img src="<?= $escaper->escapeUrl($viewModel->getImageUrl($product)) ?>"
+                             alt="<?= $escaper->escapeHtmlAttr($product->getName()) ?>" loading="lazy">
+                    </a>
+                    <a class="guest-wishlist__name" href="<?= $escaper->escapeUrl($product->getProductUrl()) ?>">
+                        <?= $escaper->escapeHtml($product->getName()) ?>
+                    </a>
+                    <p class="guest-wishlist__price">
+                        <?php if ($oldPrice = $viewModel->getOldPrice($product)): ?>
+                            <span class="guest-wishlist__old-price"><?= $escaper->escapeHtml($oldPrice) ?></span>
+                        <?php endif; ?>
+                        <span><?= $escaper->escapeHtml($viewModel->getFinalPrice($product)) ?></span>
+                    </p>
+                    <div class="guest-wishlist__actions">
+                        <?php if ($viewModel->canAddToCartDirectly($product)): ?>
+                            <button type="button" class="action primary guest-wishlist__tocart"
+                                    data-post='<?= /* @noEscape */ $viewModel->getAddToCartPostJson($product) ?>'>
+                                <?= $escaper->escapeHtml(__('Add to Cart')) ?>
+                            </button>
+                        <?php else: ?>
+                            <a class="action primary guest-wishlist__tocart" href="<?= $escaper->escapeUrl($product->getProductUrl()) ?>">
+                                <?= $escaper->escapeHtml(__('View Product')) ?>
+                            </a>
+                        <?php endif; ?>
+                        <button type="button" class="guest-wishlist__remove"
+                                data-post='<?= /* @noEscape */ $viewModel->getRemovePostJson($product) ?>'>
+                            <?= $escaper->escapeHtml(__('Remove')) ?>
+                        </button>
+                    </div>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    <?php endif; ?>
+</div>

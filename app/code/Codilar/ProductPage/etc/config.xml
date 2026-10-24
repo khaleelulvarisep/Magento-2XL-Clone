@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <codilar_pdp>
+            <points>
+                <enabled>1</enabled>
+                <rate>1</rate>
+            </points>
+            <installments>
+                <enabled>1</enabled>
+                <tabby>1</tabby>
+                <tamara>1</tamara>
+            </installments>
+            <warehouse>
+                <enabled>1</enabled>
+                <learn_more_url>warehouse-pickup</learn_more_url>
+            </warehouse>
+            <shipping>
+                <text>Accessories are delivered within 2-3 working days and furniture within 5-7 working days.</text>
+                <learn_more_url>shipping-information</learn_more_url>
+            </shipping>
+        </codilar_pdp>
+    </default>
+</config>

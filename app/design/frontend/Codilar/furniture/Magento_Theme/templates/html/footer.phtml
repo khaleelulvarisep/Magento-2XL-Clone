@@ -1,0 +1,113 @@
+<?php
+/**
+ * Footer: link columns + newsletter, social icons, popular searches, WhatsApp button.
+ *
+ * @var \Magento\Framework\View\Element\Template $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+$page = fn (string $path): string => $block->getUrl('', ['_direct' => $path]);
+$search = fn (string $term): string => $block->getUrl('catalogsearch/result', ['_query' => ['q' => $term]]);
+
+$columns = [
+    [
+        'heading' => __('About'),
+        'links' => [
+            [__('About 2XL Home'), $page('about-us')],
+            [__('Consumer Rights'), $page('consumer-rights')],
+            [__('Partners Privilage Program'), $page('partners-privilege-program')],
+            [__('Bedroom Studio'), $page('bedroom-studio')],
+            [__('Sougha Rewards'), $page('sougha-rewards')],
+            [__('Office Furniture'), $page('office-furniture')],
+            [__('Blog'), $page('blog')],
+            [__('Sitemap'), $page('sitemap.html')],
+        ],
+    ],
+    [
+        'heading' => __('Customer Service'),
+        'links' => [
+            [__('Shipping Information'), $page('shipping-information')],
+            [__("FAQ's"), $page('faq')],
+            [__('Easy Payment Options'), $page('easy-payment-options')],
+            [__('Interior Design'), $page('interior-design')],
+            [__('Join Sougha'), $page('sougha-rewards')],
+            [__('B2B Services'), $page('b2b-services')],
+        ],
+    ],
+    [
+        'heading' => __('Policies'),
+        'links' => [
+            [__('Terms and Conditions'), $page('terms-and-condition')],
+            [__('Privacy Policy'), $page('privacy-policy')],
+            [__('Return & Refund'), $page('returns-policy')],
+        ],
+    ],
+    [
+        'heading' => __('Contact Us'),
+        'links' => [
+            ['customersupport@2xlme.com', 'mailto:customersupport@2xlme.com'],
+            ['800 2XL (295)', 'tel:800295'],
+            [__('Store Locator'), $page('store-location')],
+        ],
+    ],
+];
+
+$socials = [
+    'Facebook' => ['https://www.facebook.com/2XLHome/', 'facebook'],
+    'Instagram' => ['https://www.instagram.com/2xl.home/', 'instagram'],
+    'YouTube' => ['https://www.youtube.com/user/2XLFurniture', 'youtube'],
+    'Pinterest' => ['https://www.pinterest.com/2XLHome/', 'pinterest'],
+    'LinkedIn' => ['https://www.linkedin.com/company/2xl-furniture-&-home-decor', 'linkedin'],
+    'Snapchat' => ['https://www.snapchat.com/add/furniture.2xl', 'snapchat'],
+    'TikTok' => ['https://www.tiktok.com/@2xlhome', 'tiktok'],
+];
+
+$popularSearches = [
+    'Sofas', 'Furniture', 'L-Shaped Sofas', 'Modular Sofas', 'Chairs', 'Ottomans,Stool & Pouf', 'TV Units',
+    'Tables', 'Room Dividers', 'Dining Tables', 'Dining Chairs', 'Sideboards', 'Serving Trolleys',
+    'Bar Furniture', 'Beds', 'Dressing Tables', 'Mattresses', 'Outdoor Furniture', 'Dinnerware Sets',
+    'Bathroom Accessories', 'Carpets', 'Floor Mats', 'Home Décor', 'Lamps', 'Wall Décor', 'Mirrors',
+    'Clocks', 'Kids Furniture', 'Coffee Tables', 'Side Tables', 'Tea & Coffee Sets', 'Bed Linen',
+];
+?>
+<div class="site-footer">
+    <hr class="site-footer__line">
+
+    <div class="site-footer__columns">
+        <?php foreach ($columns as $column): ?>
+            <div class="site-footer__column">
+                <p class="site-footer__heading"><?= $escaper->escapeHtml($column['heading']) ?></p>
+                <ul class="site-footer__links">
+                    <?php foreach ($column['links'] as [$label, $url]): ?>
+                        <li><a href="<?= $escaper->escapeUrl($url) ?>"><?= $escaper->escapeHtml($label) ?></a></li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
+        <?php endforeach; ?>
+        <div class="site-footer__column site-footer__column--newsletter">
+            <p class="site-footer__heading"><?= $escaper->escapeHtml(__('Sign Up for Newsletter')) ?></p>
+            <?= $block->getChildHtml('subscribe') ?>
+        </div>
+    </div>
+
+    <div class="site-footer__social">
+        <?php foreach ($socials as $name => [$url, $icon]): ?>
+            <a href="<?= $escaper->escapeUrl($url) ?>" target="_blank" rel="noopener" aria-label="<?= $escaper->escapeHtmlAttr($name) ?>">
+                <img src="<?= $escaper->escapeUrl($block->getViewFileUrl('images/footer/' . $icon . '.jpg')) ?>" alt="" width="32" height="32" loading="lazy">
+            </a>
+        <?php endforeach; ?>
+    </div>
+
+    <div class="site-footer__popular">
+        <p class="site-footer__popular-title"><strong><?= $escaper->escapeHtml(__('Popular Searches')) ?></strong></p>
+        <p class="site-footer__popular-links">
+            <?php foreach ($popularSearches as $term): ?>
+                <a href="<?= $escaper->escapeUrl($search($term)) ?>"><?= $escaper->escapeHtml($term) ?></a>
+            <?php endforeach; ?>
+        </p>
+    </div>
+
+    <a class="whatsapp-button" href="https://api.whatsapp.com/send?phone=971800295" target="_blank" rel="noopener"
+       aria-label="<?= $escaper->escapeHtmlAttr(__('WhatsApp Us')) ?>">
+        <img src="<?= $escaper->escapeUrl($block->getViewFileUrl('images/footer/whatsapp.svg')) ?>" alt="" width="28" height="28">
+    </a>
+</div>

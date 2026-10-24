@@ -1,0 +1,419 @@
+// Tabby / Tamara popups (Codilar_ProductPage::product/view/bnpl/*-modal.phtml).
+// Magento's modal supplies the overlay and wrapper; these rules restyle it to look like the providers' popups.
+
+@bnpl-font: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+
+& when (@media-common = true) {
+    // Shared modal shell
+    .modal-popup.bnpl-modal {
+        .modal-inner-wrap {
+            width: 440px;
+            max-width: calc(~'100% - 32px');
+            max-height: calc(~'100% - 32px');
+            margin: 16px auto;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, .25);
+        }
+
+        // Each popup draws its own header and close button
+        .modal-header {
+            display: none;
+        }
+
+        // Scrolls, but without a visible scrollbar (like the providers' popups)
+        .modal-content {
+            padding: 0;
+            overflow-y: auto;
+            scrollbar-width: none;
+
+            &::-webkit-scrollbar {
+                display: none;
+            }
+        }
+    }
+
+    .bnpl-popup {
+        font-family: @bnpl-font;
+        color: #1d1d1d;
+
+        p,
+        ul,
+        ol,
+        h2,
+        h3 {
+            margin: 0;
+        }
+
+        ul,
+        ol {
+            padding: 0;
+            list-style: none;
+        }
+
+        &__close,
+        &__close:hover,
+        &__close:focus,
+        &__close:active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            border: 0;
+            background: none;
+            box-shadow: none;
+            color: #1d1d1d;
+            cursor: pointer;
+        }
+
+        &__cards {
+            display: block;
+            margin: 16px auto 0;
+        }
+    }
+
+    // ---------------------------------------------------------------- Tabby
+    .modal-popup.bnpl-modal--tabby .modal-inner-wrap {
+        background: #f5f3f0;
+    }
+
+    .bnpl-popup--tabby {
+        padding: 22px 16px 16px;
+
+        .bnpl-popup__head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 0 8px 20px;
+
+            img {
+                width: 92px;
+                height: auto;
+            }
+        }
+
+        .bnpl-popup__close {
+            width: 24px;
+            height: 24px;
+        }
+    }
+
+    .tabby-popup {
+        &__illustration {
+            display: block;
+            width: 100%;
+            height: auto;
+            border-radius: 20px;
+        }
+
+        &__title {
+            margin-top: 28px !important;
+            font-size: 2.4rem;
+            font-weight: 800;
+            letter-spacing: -.02em;
+        }
+
+        &__subtitle {
+            margin-top: 8px !important;
+            font-size: 1.4rem;
+        }
+
+        &__plans {
+            margin: 28px 0 16px !important;
+        }
+
+        &__card {
+            margin-top: 16px;
+            padding: 20px;
+            border-radius: 24px;
+            background: #fff;
+        }
+
+        &__plans &__card:first-child {
+            margin-top: 0;
+        }
+
+        &__plan {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            font-size: 1.5rem;
+        }
+
+        &__plan-note {
+            margin-top: 4px !important;
+            color: #757575;
+            font-size: 1.4rem;
+
+            &--free {
+                color: #12a150;
+            }
+        }
+
+        &__plan-amount {
+            white-space: nowrap;
+        }
+
+        &__card-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+        }
+
+        &__steps li {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            margin-top: 16px;
+            font-size: 1.5rem;
+            line-height: 1.45;
+        }
+
+        &__step-number {
+            display: flex;
+            flex-shrink: 0;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #f5f3f0;
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+
+        &__feature {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+        }
+
+        &__feature-icon {
+            display: flex;
+            flex-shrink: 0;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #eaf2fc;
+        }
+
+        &__feature-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        &__feature-text {
+            color: #757575;
+            font-size: 1.4rem;
+            line-height: 1.3;
+        }
+
+        &__continue,
+        &__continue:hover,
+        &__continue:focus,
+        &__continue:active {
+            display: block;
+            width: 100%;
+            height: 64px;
+            margin-top: 32px;
+            border: 0;
+            border-radius: 20px;
+            background: #1d1d1d;
+            box-shadow: none;
+            color: #fff;
+            font-family: @bnpl-font;
+            font-size: 1.5rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+    }
+
+    // ---------------------------------------------------------------- Tamara
+    .modal-popup.bnpl-modal--tamara .modal-inner-wrap {
+        width: 594px;
+        border-radius: 32px;
+        background: #fff;
+    }
+
+    .bnpl-popup--tamara {
+        position: relative;
+
+        > .bnpl-popup__close {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #eeeef6;
+        }
+    }
+
+    .tamara-popup {
+        &__intro {
+            padding: 48px 24px 0;
+            text-align: center;
+
+            img {
+                display: block;
+                margin: 0 auto;
+            }
+        }
+
+        &__title {
+            margin-top: 24px !important;
+            color: #1f1c45;
+            font-size: 4rem;
+            font-weight: 800;
+            line-height: 1.05;
+            letter-spacing: -.03em;
+        }
+
+        &__subtitle {
+            margin-top: 20px !important;
+            color: #3c3a5a;
+            font-size: 1.6rem;
+
+            strong {
+                font-weight: 600;
+            }
+        }
+
+        &__plans-title {
+            margin-top: 48px !important;
+            font-size: 1.6rem;
+        }
+
+        &__plans {
+            padding: 12px 24px 0 !important;
+        }
+
+        &__plan {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 12px;
+            padding: 14px 16px;
+            border: 1px solid #e3e2ef;
+            border-radius: 12px;
+        }
+
+        &__plan-amount {
+            font-size: 1.6rem;
+            font-weight: 700;
+        }
+
+        &__plan-note {
+            margin-top: 4px !important;
+            color: #6b6a7d;
+            font-size: 1.4rem;
+
+            &--free {
+                color: #26858a;
+            }
+        }
+
+        &__pill {
+            flex-shrink: 0;
+            padding: 4px 8px;
+            border-radius: 6px;
+            background: #f8edfd;
+            color: #9b27d6;
+            font-size: 1.2rem;
+        }
+
+        &__how {
+            margin: 52px 24px 20px;
+            padding: 24px;
+            border: 1px solid #eceaf5;
+            border-radius: 16px;
+        }
+
+        &__how-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+        }
+
+        &__steps li {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            margin-top: 24px;
+        }
+
+        &__step-number {
+            display: flex;
+            flex-shrink: 0;
+            align-items: center;
+            justify-content: center;
+            width: 26px;
+            height: 26px;
+            border: 1px solid #c9d6ec;
+            border-radius: 50%;
+            color: #3c6fb8;
+            font-size: 1.2rem;
+        }
+
+        &__step-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+        }
+
+        &__step-text {
+            margin-top: 8px !important;
+            color: #4c4b63;
+            font-size: 1.4rem;
+            line-height: 1.35;
+        }
+
+        &__why {
+            padding: 40px 24px 40px;
+            background: #f4f4fd;
+        }
+
+        &__why-title {
+            font-size: 2rem;
+            text-align: center;
+        }
+
+        &__why-items {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            margin-top: 36px;
+            padding-bottom: 32px;
+            border-bottom: 1px solid #dddcea;
+            text-align: center;
+
+            img {
+                display: block;
+                margin: 0 auto 6px;
+            }
+
+            p {
+                font-size: 1.4rem;
+                line-height: 1.55;
+            }
+        }
+
+        &__disclaimer {
+            padding: 20px 0;
+            border-bottom: 1px solid #dddcea;
+            color: #5b5a70;
+            font-size: 1.2rem;
+            line-height: 1.65;
+
+            a {
+                color: inherit;
+                text-decoration: underline;
+            }
+        }
+    }
+}
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .tamara-popup__title {
+        font-size: 3rem;
+    }
+}

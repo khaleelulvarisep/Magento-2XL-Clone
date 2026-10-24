@@ -1,0 +1,93 @@
+<?php
+/**
+ * Tamara "More options" popup (display only). Opened by [data-bnpl-open="tamara"].
+ *
+ * @var \Magento\Catalog\Block\Product\View $block
+ * @var \Magento\Framework\Escaper $escaper
+ * @var \Codilar\ProductPage\ViewModel\Installments $viewModel
+ */
+$viewModel = $block->getData('installments');
+$product = $block->getProduct();
+$plans = $viewModel->getTamaraPlans($product);
+$lowest = $viewModel->getLowestMonthlyPlan($plans);
+// Returns an already-escaped URL of an image in this module
+$image = fn (string $file): string => $escaper->escapeUrl($block->getViewFileUrl('Codilar_ProductPage::images/bnpl/' . $file));
+$steps = [
+    [__('Pick a plan that works for you'), __('Choose Tamara at checkout and select the payment plan that fits your needs.')],
+    [__('Pay your first payment securely'), __('Enter your card details to make your first payment safely and instantly.')],
+    [__('Stay in control'), __('Track and manage all your upcoming payments easily in the Tamara app.')],
+    [__("We've got your back"), __('Get helpful reminders before each payment, no surprises.')],
+];
+?>
+<div class="bnpl-popup bnpl-popup--tamara" hidden
+     data-mage-init='{"Codilar_ProductPage/js/bnpl-modal": {"provider": "tamara"}}'>
+    <button type="button" class="bnpl-popup__close" data-bnpl-close aria-label="<?= $escaper->escapeHtmlAttr(__('Close')) ?>">
+        <svg width="12" height="12" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 2l12 12M14 2L2 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+
+    <div class="tamara-popup__intro">
+        <img src="<?= /* @noEscape */ $image('tamara-logo-modal.png') ?>" alt="tamara" width="97" height="34">
+        <h2 class="tamara-popup__title"><?= $escaper->escapeHtml(__('Your payment,')) ?><br><?= $escaper->escapeHtml(__('your pace')) ?></h2>
+        <p class="tamara-popup__subtitle">
+            <?= $escaper->escapeHtml(__('Pay as low as')) ?>
+            <strong><?= $escaper->escapeHtml(__('%1/mo', $lowest['monthly'])) ?></strong>,
+            <?= $escaper->escapeHtml(__('or in %1 payments', $lowest['count'])) ?>
+        </p>
+        <p class="tamara-popup__plans-title"><?= $escaper->escapeHtml(__('Example plans')) ?></p>
+    </div>
+
+    <ul class="tamara-popup__plans">
+        <?php foreach ($plans as $plan): ?>
+            <li class="tamara-popup__plan">
+                <div>
+                    <p class="tamara-popup__plan-amount"><?= $escaper->escapeHtml(__('%1/mo', $plan['monthly'])) ?></p>
+                    <p class="tamara-popup__plan-note<?= $plan['fee'] ? '' : ' tamara-popup__plan-note--free' ?>">
+                        <?= $escaper->escapeHtml($plan['fee'] ? __('Fees may apply') : __('No fees')) ?>
+                    </p>
+                </div>
+                <span class="tamara-popup__pill"><?= $escaper->escapeHtml(__('%1 Payments', $plan['count'])) ?></span>
+            </li>
+        <?php endforeach; ?>
+        <li class="tamara-popup__plan">
+            <div>
+                <p class="tamara-popup__plan-amount"><?= $escaper->escapeHtml($viewModel->getFormattedPrice($product)) ?></p>
+                <p class="tamara-popup__plan-note tamara-popup__plan-note--free"><?= $escaper->escapeHtml(__('1% cashback and buyer protection')) ?></p>
+            </div>
+            <span class="tamara-popup__pill"><?= $escaper->escapeHtml(__('Pay in Full')) ?></span>
+        </li>
+    </ul>
+
+    <div class="tamara-popup__how">
+        <h3 class="tamara-popup__how-title"><?= $escaper->escapeHtml(__('How it works?')) ?></h3>
+        <ol class="tamara-popup__steps">
+            <?php foreach ($steps as $number => [$title, $text]): ?>
+                <li>
+                    <span class="tamara-popup__step-number"><?= $number + 1 ?></span>
+                    <div>
+                        <p class="tamara-popup__step-title"><?= $escaper->escapeHtml($title) ?></p>
+                        <p class="tamara-popup__step-text"><?= $escaper->escapeHtml($text) ?></p>
+                    </div>
+                </li>
+            <?php endforeach; ?>
+        </ol>
+    </div>
+
+    <div class="tamara-popup__why">
+        <p class="tamara-popup__why-title"><?= $escaper->escapeHtml(__('Why Tamara?')) ?></p>
+        <div class="tamara-popup__why-items">
+            <div>
+                <img src="<?= /* @noEscape */ $image('tamara-protection.png') ?>" alt="" width="34" height="32">
+                <p><?= $escaper->escapeHtml(__('100%')) ?><br><?= $escaper->escapeHtml(__('buyer protection')) ?></p>
+            </div>
+            <div>
+                <img src="<?= /* @noEscape */ $image('tamara-no-fees.png') ?>" alt="" width="33" height="32">
+                <p><?= $escaper->escapeHtml(__('No late')) ?><br><?= $escaper->escapeHtml(__('fees')) ?></p>
+            </div>
+        </div>
+        <p class="tamara-popup__disclaimer">
+            <?= $escaper->escapeHtml(__('Payment plans shown are estimates. Actual offers may vary based on your eligibility and order details. Not all merchants or products qualify for every plan, including Tamara’s long-term financing options. Approval is subject to eligibility checks and may require a down payment. Final terms, including monthly payment amounts, may change after checkout review and may exclude taxes, shipping, or other charges. For more information, see our')) ?>
+            <a href="https://tamara.co/" target="_blank" rel="noopener"><?= $escaper->escapeHtml(__('Terms & Conditions')) ?></a>
+        </p>
+        <img class="bnpl-popup__cards" src="<?= /* @noEscape */ $image('tamara-cards.png') ?>" alt="<?= $escaper->escapeHtmlAttr(__('Apple Pay, Mastercard, Visa')) ?>" width="116" height="24">
+    </div>
+</div>

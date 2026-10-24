@@ -1,0 +1,14 @@
+<?php
+/**
+ * "(-20% OFF)" next to the price.
+ *
+ * @var \Magento\Catalog\Block\Product\View $block
+ * @var \Magento\Framework\Escaper $escaper
+ * @var \Codilar\ProductPage\ViewModel\Discount $viewModel
+ */
+$viewModel = $block->getData('discount');
+$percent = $viewModel->getPercent($block->getProduct());
+?>
+<?php if ($percent > 0): ?>
+    <span class="pdp-discount"><?= $escaper->escapeHtml(__('(-%1% OFF)', $percent)) ?></span>
+<?php endif; ?>

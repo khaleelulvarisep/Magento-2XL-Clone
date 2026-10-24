@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<!--
+    Arranges the product page. Lives in the theme (not the module) because Luma also moves
+    these blocks, and only a child theme's layout is applied after Luma's.
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <!-- Header: title, category, SKU | wishlist, reviews -->
+        <move element="page.main.title" destination="codilar.pdp.header.main" before="-"/>
+        <move element="product.info.sku" destination="codilar.pdp.header.main" after="codilar.pdp.category"/>
+        <move element="view.addto.wishlist" destination="codilar.pdp.header.aside" before="-"/>
+        <move element="product.info.review" destination="codilar.pdp.header.aside" after="view.addto.wishlist"/>
+
+        <!-- Price, then "-20% OFF", then stock -->
+        <move element="codilar.pdp.discount" destination="product.info.price" after="product.price.final"/>
+        <move element="product.info.stock.sku" destination="product.info.price" after="codilar.pdp.discount"/>
+
+        <!-- Details accordion sits in the right column, under the warehouse box -->
+        <move element="product.info.details" destination="product.info.main" after="codilar.pdp.warehouse"/>
+        <move element="codilar.pdp.features" destination="product.info.main" after="product.info.details"/>
+
+        <!-- Images | info side by side; the info column is sticky (see .pdp-columns in _extend.less) -->
+        <referenceContainer name="content">
+            <container name="codilar.pdp.columns" htmlTag="div" htmlClass="pdp-columns" before="-"/>
+        </referenceContainer>
+        <move element="product.info.media" destination="codilar.pdp.columns" before="-"/>
+        <move element="product.info.main" destination="codilar.pdp.columns" after="product.info.media"/>
+
+        <referenceBlock name="product.info.overview" remove="true"/>
+        <referenceBlock name="product.info.mailto" remove="true"/>
+        <referenceBlock name="view.addto.compare" remove="true"/>
+    </body>
+</page>

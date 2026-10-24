@@ -1,0 +1,25 @@
+<?php
+/**
+ * Black promo strip above the header.
+ *
+ * @var \Magento\Framework\View\Element\Template $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+$items = [
+    ['label' => __('B2B Services'), 'url' => 'b2b-services', 'icon' => null],
+    ['label' => __('Buy Now Pay Later'), 'url' => 'easy-payment-options', 'icon' => 'images/header/buy-now-pay-later.svg'],
+    ['label' => __('Free Delivery & Installation'), 'url' => 'shipping-information', 'icon' => 'images/header/free-shipping.svg'],
+    ['label' => __('Easy Return & Refund'), 'url' => 'returns-policy', 'icon' => 'images/header/easy-return.svg'],
+    ['label' => __('Join Sougha Rewards'), 'url' => 'sougha-rewards', 'icon' => 'images/header/rewards.png'],
+];
+?>
+<div class="top-bar">
+    <?php foreach ($items as $item): ?>
+        <a class="top-bar__item" href="<?= $escaper->escapeUrl($block->getUrl('', ['_direct' => $item['url']])) ?>">
+            <?php if ($item['icon']): ?>
+                <img src="<?= $escaper->escapeUrl($block->getViewFileUrl($item['icon'])) ?>" alt="" width="22" height="22">
+            <?php endif; ?>
+            <span><?= $escaper->escapeHtml($item['label']) ?></span>
+        </a>
+    <?php endforeach; ?>
+</div>

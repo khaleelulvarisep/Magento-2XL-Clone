@@ -1,0 +1,43 @@
+<?php
+/**
+ * Right side of the header: language/store, account, wishlist, cart, store locator.
+ *
+ * @var \Magento\Framework\View\Element\Template $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+$switchers = trim($block->getChildHtml('store_language') . $block->getChildHtml('currency'));
+?>
+<div class="header-icons">
+    <div class="header-icons__item header-icons__globe">
+        <button type="button" class="header-icons__link"
+                <?php if ($switchers): ?>data-mage-init='{"dropdown":{}}' data-toggle="dropdown"<?php endif; ?>
+                aria-label="<?= $escaper->escapeHtmlAttr(__('Language and store')) ?>">
+            <svg width="24" height="24" viewBox="0 0 24 25" fill="none" aria-hidden="true"><circle cx="12" cy="12.5" r="9" stroke="currentColor" stroke-width="1.3"/><path d="M3.5 12.5h17M12 3.7c2.3 2.3 3.6 5.4 3.6 8.8s-1.3 6.5-3.6 8.8M12 3.7c-2.3 2.3-3.6 5.4-3.6 8.8s1.3 6.5 3.6 8.8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+            <svg class="header-icons__caret" width="8" height="8" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>
+        </button>
+        <?php if ($switchers): ?>
+            <div class="header-icons__dropdown" data-target="dropdown"><?= /* @noEscape */ $switchers ?></div>
+        <?php endif; ?>
+    </div>
+    <div class="header-icons__item">
+        <a class="header-icons__link" href="<?= $escaper->escapeUrl($block->getUrl('customer/account')) ?>"
+           aria-label="<?= $escaper->escapeHtmlAttr(__('My Account')) ?>">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="8" r="4.3" stroke="currentColor" stroke-width="1.3"/><path d="M3.8 21c.6-4 4-6.6 8.2-6.6s7.6 2.6 8.2 6.6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        </a>
+    </div>
+    <div class="header-icons__item">
+        <a class="header-icons__link" href="<?= $escaper->escapeUrl($block->getUrl('wishlist')) ?>"
+           aria-label="<?= $escaper->escapeHtmlAttr(__('My Wish List')) ?>">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 20.5l-1.4-1.3C5.4 14.5 2 11.4 2 7.6 2 4.5 4.4 2 7.5 2c1.7 0 3.4.8 4.5 2.1C13.1 2.8 14.8 2 16.5 2 19.6 2 22 4.5 22 7.6c0 3.8-3.4 6.9-8.6 11.6L12 20.5z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+        </a>
+    </div>
+    <div class="header-icons__item header-icons__cart">
+        <?= $block->getChildHtml('minicart') ?>
+    </div>
+    <div class="header-icons__item">
+        <a class="header-icons__link" href="<?= $escaper->escapeUrl($block->getUrl('', ['_direct' => 'store-location'])) ?>"
+           aria-label="<?= $escaper->escapeHtmlAttr(__('Store Locator')) ?>">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 21.5s-6.5-6.2-6.5-11.2a6.5 6.5 0 0113 0c0 5-6.5 11.2-6.5 11.2z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><circle cx="12" cy="10.3" r="2.4" stroke="currentColor" stroke-width="1.3"/></svg>
+        </a>
+    </div>
+</div>

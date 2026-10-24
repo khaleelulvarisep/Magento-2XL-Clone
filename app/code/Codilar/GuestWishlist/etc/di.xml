@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <!--
+        sortOrder 5 runs before Magento's own "authentication" plugin (sortOrder 10, on AbstractIndex),
+        which would otherwise send guests to the login page.
+    -->
+    <type name="Magento\Wishlist\Controller\Index\Add">
+        <plugin name="codilar_guest_wishlist_add" type="Codilar\GuestWishlist\Plugin\GuestAddToWishlist" sortOrder="5"/>
+    </type>
+    <!-- Guests opening /wishlist see their guest wishlist instead of the login page -->
+    <type name="Magento\Wishlist\Controller\Index\Index">
+        <plugin name="codilar_guest_wishlist_view" type="Codilar\GuestWishlist\Plugin\RedirectGuestToGuestWishlist" sortOrder="5"/>
+    </type>
+</config>

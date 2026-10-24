@@ -1,0 +1,28 @@
+<?php
+/**
+ * Server-side product breadcrumbs: Home / Category / Sub-category / Product
+ *
+ * @var \Magento\Theme\Block\Html\Breadcrumbs $block
+ * @var \Magento\Framework\Escaper $escaper
+ * @var \Codilar\ProductPage\ViewModel\CategoryPath $viewModel
+ */
+$viewModel = $block->getData('category_path');
+$product = $viewModel->getCurrentProduct();
+if (!$product) {
+    return;
+}
+?>
+<div class="breadcrumbs">
+    <ul class="items">
+        <li class="item home">
+            <a href="<?= $escaper->escapeUrl($block->getBaseUrl()) ?>"
+               title="<?= $escaper->escapeHtmlAttr(__('Go to Home Page')) ?>"><?= $escaper->escapeHtml(__('Home')) ?></a>
+        </li>
+        <?php foreach ($viewModel->getPath($product) as $category): ?>
+            <li class="item category">
+                <a href="<?= $escaper->escapeUrl($category->getUrl()) ?>"><?= $escaper->escapeHtml($category->getName()) ?></a>
+            </li>
+        <?php endforeach; ?>
+        <li class="item product"><strong><?= $escaper->escapeHtml($product->getName()) ?></strong></li>
+    </ul>
+</div>

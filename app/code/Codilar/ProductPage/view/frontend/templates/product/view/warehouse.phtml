@@ -1,0 +1,25 @@
+<?php
+/**
+ * Warehouse pickup box.
+ *
+ * @var \Magento\Catalog\Block\Product\View $block
+ * @var \Magento\Framework\Escaper $escaper
+ * @var \Codilar\ProductPage\ViewModel\Warehouse $viewModel
+ */
+$viewModel = $block->getData('warehouse');
+?>
+<?php if ($viewModel->isAvailable($block->getProduct())): ?>
+    <div class="pdp-warehouse">
+        <img class="pdp-warehouse__icon" src="<?= $escaper->escapeUrl($block->getViewFileUrl('Codilar_ProductPage::images/pdp/warehouse.jpg')) ?>"
+             alt="" width="34" height="34">
+        <div>
+            <p class="pdp-warehouse__title"><?= $escaper->escapeHtml(__('Warehouse')) ?></p>
+            <p class="pdp-warehouse__text">
+                <?= $escaper->escapeHtml(__('Eligible for Warehouse Pickup.')) ?>
+                <?php if ($url = $viewModel->getLearnMoreUrl()): ?>
+                    <a href="<?= $escaper->escapeUrl($url) ?>"><?= $escaper->escapeHtml(__('Learn More')) ?></a>
+                <?php endif; ?>
+            </p>
+        </div>
+    </div>
+<?php endif; ?>
