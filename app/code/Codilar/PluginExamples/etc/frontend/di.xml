@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <!--
+        Declared in etc/frontend/ so the rules only apply on the storefront:
+        admins can still create orders with any qty and create customers with any email.
+    -->
+
+    <!-- BEFORE: max 2 units of a product per cart -->
+    <type name="Codilar\PluginExamples\Model\CartQtyLimit">
+        <arguments>
+            <argument name="maxQty" xsi:type="number">2</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Quote\Model\Quote">
+        <plugin name="codilar_limit_qty_on_add" type="Codilar\PluginExamples\Plugin\LimitQtyOnAddToCart"/>
+    </type>
+    <type name="Magento\Checkout\Model\Cart">
+        <plugin name="codilar_limit_qty_on_update" type="Codilar\PluginExamples\Plugin\LimitQtyOnCartUpdate"/>
+    </type>
+
+    <!-- AFTER: free shipping progress in the minicart -->
+    <type name="Magento\Checkout\CustomerData\Cart">
+        <plugin name="codilar_minicart_free_shipping" type="Codilar\PluginExamples\Plugin\AddFreeShippingProgressToMinicart"/>
+    </type>
+
+    <!-- AROUND: block disposable emails on registration, log successful sign-ups to var/log/codilar_signup.log -->
+    <virtualType name="Codilar\PluginExamples\Logger\SignupHandler" type="Magento\Framework\Logger\Handler\Base">
+        <arguments>
+            <argument name="fileName" xsi:type="string">/var/log/codilar_signup.log</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Codilar\PluginExamples\Logger\SignupLogger" type="Magento\Framework\Logger\Monolog">
+        <arguments>
+            <argument name="name" xsi:type="string">codilar_signup</argument>
+            <argument name="handlers" xsi:type="array">
+                <item name="file" xsi:type="object">Codilar\PluginExamples\Logger\SignupHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <type name="Codilar\PluginExamples\Plugin\BlockDisposableEmailSignup">
+        <arguments>
+            <argument name="logger" xsi:type="object">Codilar\PluginExamples\Logger\SignupLogger</argument>
+            <argument name="blockedDomains" xsi:type="array">
+                <item name="mailinator" xsi:type="string">mailinator.com</item>
+                <item name="tempmail" xsi:type="string">temp-mail.org</item>
+                <item name="guerrillamail" xsi:type="string">guerrillamail.com</item>
+                <item name="10minutemail" xsi:type="string">10minutemail.com</item>
+                <item name="yopmail" xsi:type="string">yopmail.com</item>
+                <item name="throwaway" xsi:type="string">throwawaymail.com</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Customer\Api\AccountManagementInterface">
+        <plugin name="codilar_block_disposable_email" type="Codilar\PluginExamples\Plugin\BlockDisposableEmailSignup"/>
+    </type>
+</config>

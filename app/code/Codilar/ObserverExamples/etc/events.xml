@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <!--
+        Custom event: Codilar_PluginExamples dispatches "codilar_signup_blocked" from its around plugin.
+        That module doesn't know who is listening; this observer tells the admin via the notification bell.
+    -->
+    <event name="codilar_signup_blocked">
+        <observer name="codilar_notify_admin_blocked_signup" instance="Codilar\ObserverExamples\Observer\NotifyAdminOfBlockedSignup"/>
+    </event>
+</config>

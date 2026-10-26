@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <!--
+        PREFERENCE: wherever Magento would create Customer\Model\AccountManagement, it creates our subclass instead.
+        Core already maps AccountManagementInterface => Customer\Model\AccountManagement, and preferences chain,
+        so the storefront (register, change password, reset password) ends up on our class.
+        Plugins on the interface (e.g. Codilar_PluginExamples' BlockDisposableEmailSignup) still apply.
+    -->
+    <preference for="Magento\Customer\Model\AccountManagement"
+                type="Codilar\PreferenceExamples\Model\AccountManagement"/>
+</config>

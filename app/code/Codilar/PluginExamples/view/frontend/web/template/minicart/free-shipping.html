@@ -1,0 +1,8 @@
+<div class="codilar-free-shipping" if="cart().free_shipping_message"
+     style="margin: 10px 0; text-align: center; font-size: 13px;">
+    <div text="cart().free_shipping_message"></div>
+    <div style="height: 6px; margin-top: 6px; background: #e5e5e5; border-radius: 3px; overflow: hidden;">
+        <div style="height: 100%; background: #2e7d32;"
+             data-bind="style: {width: cart().free_shipping_percent + '%'}"></div>
+    </div>
+</div>

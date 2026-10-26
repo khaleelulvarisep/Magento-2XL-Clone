@@ -178,6 +178,11 @@
             display: flex;
         }
 
+        // Logged out: the logout slot has no link, so don't let it add an extra gap
+        &__logout:not(:has(a)) {
+            display: none;
+        }
+
         &__link {
             display: flex;
             align-items: center;
